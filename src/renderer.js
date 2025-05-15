@@ -31,6 +31,7 @@ import "./index.css";
 const button = document.getElementsByClassName("button")[0];
 const timer = document.getElementById("timer");
 const buttonDiv = document.getElementById("button-div");
+let imageContainer = document.getElementById("image-container");
 let interval = null;
 let newInterval = null;
 
@@ -38,10 +39,13 @@ button.addEventListener("click", startTimer);
 
 function breakTime() {
 if (interval) clearInterval(interval);
+timer.innerHTML = "20";
     buttonDiv.innerHTML = '<button id="skip-break-button" class="skip-button">Skip the break</button>';
     const skipBreakButton = document.getElementById("skip-break-button");
     skipBreakButton.addEventListener('click', startTimer);
     let seconds = 20;
+    imageContainer.innerHTML = '<img class="working-image" src="./src/assets/break.png" />'
+
     newInterval = setInterval(function () {
         seconds = seconds - 1;
         timer.innerHTML = seconds;
@@ -58,11 +62,14 @@ if (interval) clearInterval(interval);
 
 
 function startTimer() {
+
     if (newInterval) clearInterval(newInterval);
 
     let startTime = new Date().getTime();
     let twentyMinutes = 1000 * 60 * 1;
     let endTime = startTime + twentyMinutes;
+        imageContainer.innerHTML = '<img class="working-image" src="./src/assets/work.png" />'
+
 
     interval = setInterval(() => {
         let timeLeft = endTime - new Date().getTime();
