@@ -30,35 +30,63 @@ import "./index.css";
 
 const button = document.getElementsByClassName("button")[0];
 const timer = document.getElementById("timer");
+const buttonDiv = document.getElementById("button-div");
+let interval = null;
 
-button.addEventListener("click", function () {
+button.addEventListener("click", startTimer);
+
+function breakTime() {
+if (interval) clearInterval(interval);
+    let seconds = 20;
+    const newInterval = setInterval(function () {
+        seconds = seconds - 1;
+        timer.innerHTML = seconds;
+        if(seconds == 0) {
+            clearInterval(newInterval);
+            const NOTIFICATION_TITLE = "The break ended!";
+            const NOTIFICATION_BODY = "It's time to work."
+
+            new Notification(NOTIFICATION_TITLE, {body: NOTIFICATION_BODY});
+            startTimer();
+        }
+    }, 1000);
+}
+
+
+function startTimer() {
     let startTime = new Date().getTime();
     let twentyMinutes = 1000 * 60 * 1;
     let endTime = startTime + twentyMinutes;
 
-    setInterval(function () {
+    interval = setInterval(() => {
         let timeLeft = endTime - new Date().getTime();
         let minutes = timeLeft / (1000 * 60);
         minutes = Math.floor(minutes);
         let seconds = (timeLeft / 1000) % 60;
         seconds = Math.round(seconds);
         let text;
-        if (minutes < 10) {
+        if (minutes < 10 && seconds < 10) {
+            text = "0" + minutes + " : " + "0" + seconds;
+        } else if (minutes < 10) {
             text = "0" + minutes + " : " + seconds;
+        } else if (seconds < 10) {
+            text = minutes + " : 0" + seconds;
         } else {
             text = minutes + " : " + seconds;
         }
 
         timer.innerHTML = text;
-        button.innerHTML = "Jump to the next break";
-
+        buttonDiv.innerHTML = '<button id="skip-button" class="skip-button">Skip to the next break</button>';
+        const skipButton = document.getElementById("skip-button");
+        skipButton.addEventListener("click", breakTime);
         if (timeLeft < 0) {
             timer.innerHTML = "00 : 00";
-            const NOTIFICATION_TITLE = "Title";
-            const NOTIFICATION_BODY = "Notification from the Renderer process. Click to log to console.";
+            const NOTIFICATION_TITLE = "It's time to take a break!";
+            const NOTIFICATION_BODY = "Look out of the window and drink something.";
 
             new Notification(NOTIFICATION_TITLE, {body: NOTIFICATION_BODY});
-             
+            clearInterval(interval);
+            breakTime();
         }
     }, 1000);
-});
+}
