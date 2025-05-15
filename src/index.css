@@ -35,11 +35,10 @@ body {
   background-color: rgb(55, 55, 247);
   padding: 5px;
   border: none;
-  border-radius: 3px;
+  border-radius: 6px;
   cursor: pointer;
   margin-top: 20px;
   height: 30px;
-  width: 80px;
   font-weight: bold;
 }
 
