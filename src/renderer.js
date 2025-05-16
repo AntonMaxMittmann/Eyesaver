@@ -27,6 +27,8 @@
  */
 
 import "./index.css";
+import workImage from './assets/work.png';
+import breakImage from './assets/break.png';
 
 const button = document.getElementsByClassName("button")[0];
 const timer = document.getElementById("timer");
@@ -44,7 +46,7 @@ timer.innerHTML = "20";
     const skipBreakButton = document.getElementById("skip-break-button");
     skipBreakButton.addEventListener('click', startTimer);
     let seconds = 20;
-    imageContainer.innerHTML = '<img class="working-image" src="./src/assets/break.png" />'
+    imageContainer.innerHTML = `<img class="working-image" src="${breakImage}"/>`
 
     newInterval = setInterval(function () {
         seconds = seconds - 1;
@@ -62,13 +64,16 @@ timer.innerHTML = "20";
 
 
 function startTimer() {
+            imageContainer.innerHTML = `<img class="working-image" src="${workImage}" />`
+
+    timer.innerHTML = "20 : 00";
+
 
     if (newInterval) clearInterval(newInterval);
 
     let startTime = new Date().getTime();
     let twentyMinutes = 1000 * 60 * 1;
     let endTime = startTime + twentyMinutes;
-        imageContainer.innerHTML = '<img class="working-image" src="./src/assets/work.png" />'
 
 
     interval = setInterval(() => {
